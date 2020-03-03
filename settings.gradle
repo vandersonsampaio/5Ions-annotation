@@ -1,0 +1,6 @@
+rootProject.name = '5Ions-annotation'
+
+include 'annotation.client'
+include 'annotation.model'
+include 'annotation.service'
+include 'annotation.controller'
