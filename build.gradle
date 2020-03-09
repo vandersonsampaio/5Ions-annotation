@@ -1,8 +1,19 @@
 plugins {
     id "io.spring.dependency-management" version "1.0.8.RELEASE"
+    id 'maven-publish'
 }
 
 allprojects {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = "br.ufsc.ine.ppgcc"
+                artifactId = "5ions-annotation"
+                version = "0.1"
+            }
+        }
+    }
+
     repositories {
         jcenter()
     }
