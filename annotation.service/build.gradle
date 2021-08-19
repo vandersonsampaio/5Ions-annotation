@@ -3,4 +3,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'com.google.cloud:google-cloud-language:1.98.0'
+
+    implementation 'org.mapstruct:mapstruct:1.4.1.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
 }

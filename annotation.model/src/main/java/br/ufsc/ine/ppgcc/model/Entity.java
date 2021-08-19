@@ -1,19 +1,21 @@
 package br.ufsc.ine.ppgcc.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Entity {
 
-    private Long id;
     private String source;
     private String name;
     private String type;
-    private SentimentSummary sentimentSummary;
+    private double salience;
+    private Sentiment sentiment;
     private List<Mention> mentions;
 
 }

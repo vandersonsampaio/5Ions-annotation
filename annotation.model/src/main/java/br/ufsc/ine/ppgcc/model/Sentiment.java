@@ -1,12 +1,14 @@
 package br.ufsc.ine.ppgcc.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Sentiment {
 
-    private double value;
+    private double score;
     private double magnitude;
 }

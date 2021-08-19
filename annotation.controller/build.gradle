@@ -2,13 +2,26 @@ plugins {
     id "org.springframework.boot" version "2.1.7.RELEASE"
 }
 
+sourceSets {
+    integrationTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    intTestImplementation.extendsFrom implementation
+    intTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
 dependencies {
     implementation project(':annotation.service')
     implementation project(':annotation.model')
+    implementation project(':annotation.client')
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.h2database:h2'
 
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign', version: '1.4.7.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }

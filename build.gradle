@@ -1,34 +1,70 @@
 plugins {
     id "io.spring.dependency-management" version "1.0.8.RELEASE"
-    id 'maven-publish'
 }
 
+group = 'br.ufsc.ine.ppgcc.5ions-annotation'
+version = '0.0.1-SNAPSHOT'
+
 allprojects {
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                groupId = "br.ufsc.ine.ppgcc"
-                artifactId = "5ions-annotation"
-                version = "0.1"
-            }
-        }
-    }
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java-library'
+    apply plugin: 'jacoco'
 
     repositories {
         jcenter()
     }
-}
-
-subprojects {
-    version = '1.0'
-
-    apply plugin: 'java'
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'java-library'
 
     dependencyManagement {
         imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:2.1.7.RELEASE")
+            mavenBom("org.springframework.boot:spring-boot-dependencies:2.2.4.RELEASE")
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR8")
         }
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.13.2'
+        testCompile "org.mockito:mockito-core:3.10.0"
+        testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.7'
+        testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
+    }
+
+    jacoco {
+        toolVersion = "0.8.7"
+        reportsDirectory = file("$buildDir/jacoco")
+    }
+
+    jacocoTestReport {
+        dependsOn test
+
+    }
+
+    test {
+        useJUnit()
+
+        maxHeapSize = '1G'
+
+        finalizedBy jacocoTestReport
+    }
+}
+
+task jacocoRootReport(type: JacocoReport) {
+    dependsOn = subprojects.test
+    getAdditionalSourceDirs().setFrom(files(subprojects.sourceSets.main.allSource.srcDirs))
+    getSourceDirectories().setFrom(files(subprojects.sourceSets.main.allSource.srcDirs))
+    getClassDirectories().setFrom(files(subprojects.sourceSets.main.output))
+    getExecutionData().setFrom(files(subprojects.jacocoTestReport.executionData))
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+    }
+    onlyIf = {
+        true
+    }
+    doFirst {
+        getExecutionData().setFrom(files(executionData.findAll {
+            it.exists()
+        }))
     }
 }
